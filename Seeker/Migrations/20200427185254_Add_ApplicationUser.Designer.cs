@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Seeker.Models;
 
 namespace Seeker.Migrations
 {
     [DbContext(typeof(AuthenticationContext))]
-    partial class AuthenticationContextModelSnapshot : ModelSnapshot
+    [Migration("20200427185254_Add_ApplicationUser")]
+    partial class Add_ApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,6 +63,62 @@ namespace Seeker.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AccessFailedCount");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken();
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256);
+
+                    b.Property<bool>("EmailConfirmed");
+
+                    b.Property<bool>("LockoutEnabled");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PasswordHash");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<string>("SecurityStamp");
+
+                    b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -135,141 +193,17 @@ namespace Seeker.Migrations
 
             modelBuilder.Entity("Seeker.Models.ApplicationUser", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AccessFailedCount");
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.Property<string>("Address");
-
-                    b.Property<string>("City");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("EmailConfirmed");
 
                     b.Property<string>("FirstName");
 
                     b.Property<string>("LastName");
 
-                    b.Property<bool>("LockoutEnabled");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("PasswordHash");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("SecurityStamp");
-
-                    b.Property<string>("State");
-
-                    b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256);
-
                     b.Property<int>("UserType");
 
-                    b.Property<int>("Zip");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("Seeker.Models.Attachment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AttachmentType");
-
-                    b.Property<Guid?>("CountryId");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedDateTime");
-
-                    b.Property<string>("Extension");
-
-                    b.Property<string>("FileName");
-
-                    b.Property<int>("IsDeleted");
-
-                    b.Property<Guid?>("JobId");
-
-                    b.Property<string>("LastUpdatedBy");
-
-                    b.Property<DateTime>("LastUpdatedDateTime");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JobId");
-
-                    b.ToTable("Attachments");
-                });
-
-            modelBuilder.Entity("Seeker.Models.Job", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Address");
-
-                    b.Property<decimal>("Budget");
-
-                    b.Property<Guid?>("CountryId");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedDateTime");
-
-                    b.Property<string>("CreatedUserId");
-
-                    b.Property<string>("Description");
-
-                    b.Property<DateTime>("FromDateTime");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("JobNumber");
-
-                    b.Property<string>("LastUpdatedBy");
-
-                    b.Property<DateTime>("LastUpdatedDateTime");
-
-                    b.Property<string>("Title");
-
-                    b.Property<DateTime>("ToDateTime");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedUserId");
-
-                    b.ToTable("Jobs");
+                    b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -282,7 +216,7 @@ namespace Seeker.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Seeker.Models.ApplicationUser")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -290,7 +224,7 @@ namespace Seeker.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Seeker.Models.ApplicationUser")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -303,7 +237,7 @@ namespace Seeker.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Seeker.Models.ApplicationUser")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -311,24 +245,10 @@ namespace Seeker.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Seeker.Models.ApplicationUser")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Seeker.Models.Attachment", b =>
-                {
-                    b.HasOne("Seeker.Models.Job", "Job")
-                        .WithMany("Attachments")
-                        .HasForeignKey("JobId");
-                });
-
-            modelBuilder.Entity("Seeker.Models.Job", b =>
-                {
-                    b.HasOne("Seeker.Models.ApplicationUser", "CreatedUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedUserId");
                 });
 #pragma warning restore 612, 618
         }

@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace Seeker.Models
 {
-	public class AuthenticationContext : IdentityDbContext
+	public class AuthenticationContext : IdentityDbContext<ApplicationUser>
 	{
 		public AuthenticationContext(DbContextOptions options) : base(options)
-		{
-
+		{			
 		}
-		public DbSet<ApplicationUser> ApplicationUser { get; set; }
+		public DbSet<Job> Jobs { get; set; }
+		public DbSet<Attachment> Attachments { get; set; }
+		//public DbSet<ApplicationUser> ApplicationUser { get; set; }
 	}
 }
