@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,7 +15,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Seeker.Interface;
 using Seeker.Models;
+using Seeker.Services;
 
 namespace FinalYearProject
 {
@@ -69,7 +72,13 @@ namespace FinalYearProject
                     ClockSkew = TimeSpan.Zero
                 };
             });
-        }
+
+			//AzureBlob
+			services.AddSingleton(IServiceProvider => new BlobServiceClient(Configuration.GetValue<string>("ApplicationSettings:AzureBlobStorageConnectionString")));
+			services.AddTransient<IAzureBlobService, AzureBlobService>();
+			services.AddTransient<IJobService, JobService>();
+			//services.Configure<AzureStorageSettingsModel>(options => options.configuration.GetSection("AzureStorage").Bind(options));
+		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

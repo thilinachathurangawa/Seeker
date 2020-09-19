@@ -14,5 +14,6 @@ namespace Seeker.Models
 		public int IsDeleted { get; set; }
 		public int AttachmentType { get; set; }
 		public string UserId { get; set; }
+		public string FileUrl { get; set; }
 	}
 }

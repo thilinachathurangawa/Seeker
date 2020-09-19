@@ -34,37 +34,46 @@ namespace Seeker.Controllers
 		[HttpPost]
 		[Route("Register")]
 		//post ApplicationUser/Register
-		public async Task<Object> PostApplicationUser(ApplicaitonUserViewModel model)
+		public async Task<JsonResult> PostApplicationUser(ApplicaitonUserViewModel model)
 		{
-            try
-            {
-                var applicationUser = new ApplicationUser();
+			try
+			{
+				var applicationUser = new ApplicationUser();
 
 
-                    applicationUser.FirstName = model.FirstName;
-                    applicationUser.Email = model.Email;
-                    applicationUser.LastName = model.LastName;
-                    applicationUser.UserName = model.Email;
+				applicationUser.FirstName = model.FirstName;
+				applicationUser.Email = model.Email;
+				applicationUser.LastName = model.LastName;
+				applicationUser.UserName = model.Email;
 				if (model.IsProvider)
 				{
 					applicationUser.UserType = UserType.ServiceProvider;
 				}
-				else {
+				else
+				{
 					applicationUser.UserType = UserType.Client;
 				}
-              
-                {
-                    var result = await _userManager.CreateAsync(applicationUser, model.Password);
-                    return Ok(result);
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+
+				{
+					var result = await _userManager.CreateAsync(applicationUser, model.Password);
+					if (result == IdentityResult.Success)
+					{
+						return new JsonResult(new { Status = ResponseCodes.LoginSuccess });
+					}
+					else
+					{
+						return new JsonResult(new { Status = ResponseCodes.LoginFailed });
+					}
+					// return Ok(result);
+				}
+			}
+			catch (Exception)
+			{
+				return new JsonResult(new { Status = ResponseCodes.LoginFailed });
+			}
 		}
 
-        [HttpPost]
+		[HttpPost]
         [Route("Login")]
         //POST : /api/ApplicationUser/Login
         public async Task<IActionResult> Login(LoginModel model)

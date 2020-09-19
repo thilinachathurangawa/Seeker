@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Seeker.Models;
 
 namespace Seeker.Migrations
 {
     [DbContext(typeof(AuthenticationContext))]
-    partial class AuthenticationContextModelSnapshot : ModelSnapshot
+    [Migration("20200805200203_serviceTypeAddToJob")]
+    partial class serviceTypeAddToJob
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -241,8 +243,6 @@ namespace Seeker.Migrations
 
                     b.Property<string>("Address");
 
-                    b.Property<string>("AssigndUserId");
-
                     b.Property<decimal>("Budget");
 
                     b.Property<Guid?>("CountryId");
@@ -259,10 +259,6 @@ namespace Seeker.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("JobLatitude");
-
-                    b.Property<string>("JobLongitude");
-
                     b.Property<string>("JobNumber");
 
                     b.Property<string>("LastUpdatedBy");
@@ -275,11 +271,7 @@ namespace Seeker.Migrations
 
                     b.Property<DateTime>("ToDateTime");
 
-                    b.Property<int>("workflowStatus");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("AssigndUserId");
 
                     b.HasIndex("CreatedUserId");
 
@@ -340,10 +332,6 @@ namespace Seeker.Migrations
 
             modelBuilder.Entity("Seeker.Models.Job", b =>
                 {
-                    b.HasOne("Seeker.Models.ApplicationUser", "AssigndUser")
-                        .WithMany()
-                        .HasForeignKey("AssigndUserId");
-
                     b.HasOne("Seeker.Models.ApplicationUser", "CreatedUser")
                         .WithMany()
                         .HasForeignKey("CreatedUserId");
