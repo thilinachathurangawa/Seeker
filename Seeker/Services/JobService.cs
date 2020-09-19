@@ -101,14 +101,14 @@ namespace Seeker.Services
 
 		public async Task<List<JobViewModel>> GetTimeLineJobListJobAsync(string userId) {
 			var jobListViewModel = new List<JobViewModel>();
+			var pageSize = 10;
+			var pageNumber = 1;
+			var queryableJobs =  _dbContext.Jobs.Include(a=>a.Attachments).
+				Where(j => !j.IsDeleted && (j.workflowStatus == JobworkflowStatus.BidRecivedOrApproveWating || j.workflowStatus == JobworkflowStatus.PostedJob)).AsQueryable();
 
-			var jobs = await _dbContext.Jobs.Include(a=>a.Attachments).Where(j => !j.IsDeleted && (j.workflowStatus == JobworkflowStatus.BidRecivedOrApproveWating || j.workflowStatus == JobworkflowStatus.PostedJob)).ToListAsync();
-
-			if (jobs.Any())
+			if (queryableJobs.Any())
 			{
-
-				jobListViewModel = new List<JobViewModel>();
-				foreach (var job in jobs)
+				foreach (var job in queryableJobs)
 				{
 					var jobViewModel = new JobViewModel();
 					jobViewModel.Id = job.Id;
@@ -121,7 +121,10 @@ namespace Seeker.Services
 					jobListViewModel.Add(jobViewModel);
 				}			
 			}
-
+			//jobListViewModel = jobListViewModel.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+			//jobListViewModel.PageNumber = pageNumber;
+			//assetNoteList.PageTotal = notes.Count;
+			//assetNoteList.PageSize = pageSize;
 			return jobListViewModel;
 		}
 
