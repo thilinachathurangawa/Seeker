@@ -86,7 +86,7 @@ namespace Seeker.Services
 						miniJobView.JobId = job.Id;
 						miniJobView.Title = job.Title;
 						miniJobView.ServiceType = job.ServiceType;
-						miniJobView.PostedOn = job.CreatedDateTime;
+						miniJobView.PostedOn = job.CreatedDateTime.ToString("dd MMMM yyyy hh:mm tt");
 						miniJobView.Address = job.Address;
 						jobListViewModel.MiniJobViewModel.Add(miniJobView);
 					}
@@ -99,33 +99,42 @@ namespace Seeker.Services
 
 		}
 
-		public async Task<List<JobViewModel>> GetTimeLineJobListJobAsync(string userId) {
-			var jobListViewModel = new List<JobViewModel>();
+		public async Task<JobListViewModel> GetTimeLineJobListJobAsync(string userId) {
+			var jobListViewModel = new JobListViewModel();
 			var pageSize = 10;
 			var pageNumber = 1;
 			var queryableJobs =  _dbContext.Jobs.Include(a=>a.Attachments).
 				Where(j => !j.IsDeleted && (j.workflowStatus == JobworkflowStatus.BidRecivedOrApproveWating || j.workflowStatus == JobworkflowStatus.PostedJob)).AsQueryable();
 
-			if (queryableJobs.Any())
-			{
-				foreach (var job in queryableJobs)
-				{
-					var jobViewModel = new JobViewModel();
-					jobViewModel.Id = job.Id;
-					jobViewModel.Title = job.Title;
-					jobViewModel.ServiceType = job.ServiceType;
-					jobViewModel.PostedOn = job.CreatedDateTime;
-					jobViewModel.Address = job.Address;
-					jobViewModel.JobLatitude = job.JobLatitude;
-					jobViewModel.JobLongitude = job.JobLongitude;
-					jobListViewModel.Add(jobViewModel);
-				}			
-			}
-			//jobListViewModel = jobListViewModel.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-			//jobListViewModel.PageNumber = pageNumber;
-			//assetNoteList.PageTotal = notes.Count;
-			//assetNoteList.PageSize = pageSize;
+			var ConvertedListJobs = await queryableJobs.ToListAsync();
+
+			var jobList = new List<JobViewModel>();
+			jobList = AsJobViewModel(ConvertedListJobs);
+			jobListViewModel.Jobs = jobList;
+
+			jobListViewModel.TotalJobs = queryableJobs.Count();
+			jobListViewModel.Jobs = jobListViewModel.Jobs.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+			jobListViewModel.PageNumber = pageNumber;
+			jobListViewModel.PageSize = pageSize;
 			return jobListViewModel;
+		}
+
+
+		public static List<JobViewModel> AsJobViewModel(List<Job> jobsList)
+		{
+			var transformJobViewModel = jobsList.Select(job => new JobViewModel
+			{
+				Id = job.Id,
+				Title = job.Title,
+				ServiceType = job.ServiceType,
+				PostedOn = job.CreatedDateTime,
+				Address = job.Address,
+				JobLatitude = job.JobLatitude,
+				JobLongitude =job.JobLongitude
+
+			}).ToList();
+
+			return transformJobViewModel;
 		}
 
 	}

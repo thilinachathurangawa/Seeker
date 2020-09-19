@@ -11,6 +11,6 @@ namespace Seeker.Interface
 	{
 		Task<bool> CreateJobAsync(JobViewModel jobViewModel);
 		Task<MiniJobListViewModel> GetJobListJobAsync(string userId, JobworkflowStatus workFlowStatus);
-		Task<List<JobViewModel>> GetTimeLineJobListJobAsync(string userId);
+		Task<JobListViewModel> GetTimeLineJobListJobAsync(string userId);
 	}
 }
