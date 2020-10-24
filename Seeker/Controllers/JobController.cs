@@ -122,6 +122,7 @@ namespace Seeker.Controllers
 							LastUpdatedDateTime = DateTime.UtcNow,
 							CreatedBy = "System",
 							LastUpdatedBy = "System",
+							Title = file.FileName,
 							FileUrl = Url.ToString()
 					};
 
@@ -217,15 +218,120 @@ namespace Seeker.Controllers
 			return new JsonResult(status);
 		}
 
-		[Route("GetTimelineJobList")]
+
+		//neet to modify
+		[Route("GetJobListCount")]
 		[HttpGet]
-		public async Task<JsonResult> GetTimelineJobList(string userId)
+		public async Task<JsonResult> GetJobListDashboardCount(string userId, UserType userType)
 		{
 
-			var status = await _jobService.GetTimeLineJobListJobAsync(userId);
+			var status = await _jobService.GetJobListCountAsync(userId, userType);
 
 
 			return new JsonResult(status);
 		}
+
+		[Route("GetTimelineJobList")]
+		[HttpGet]
+		public async Task<JsonResult> GetTimelineJobList(string userId,int pageNumber)
+		{
+
+			var status = await _jobService.GetTimeLineJobListJobAsync(userId,pageNumber);
+
+
+			return new JsonResult(status);
+		}
+
+		[Route("postJobComment")]
+		[HttpPost]
+		public async Task<JsonResult> PostJobComment([FromBody]CommentViewModel commentViewModel)
+		{
+
+			bool status = await _jobService.AddJobComment(commentViewModel);
+
+			if (status)
+			{
+				return new JsonResult(new { Status = ResponseCodes.AllSuccess });
+			}
+			return new JsonResult(new { Status = ResponseCodes.AllFail });
+		}
+		
+
+		[Route("GetJobMainDetails")]
+		[HttpGet]
+		public async Task<JsonResult> GetJobMainDetailsAsync(Guid jobId, string userId)
+		{
+			var status = await _jobService.GetDashboardJobMainDetails(jobId, userId);
+			return new JsonResult(status);
+		}
+
+		[Route("PlaceBid")]
+		[HttpPost]
+		public async Task<JsonResult> PlaceBidRelatedToJob([FromBody] BidViewModel bid)
+		{
+
+			bool status = await _jobService.PlaceBid(bid);
+
+			if (status)
+			{
+				return new JsonResult(new { Status = ResponseCodes.AllSuccess });
+			}
+			return new JsonResult(new { Status = ResponseCodes.AllFail });
+		}
+
+		[Route("ApproveBid")]
+		[HttpPost]
+		public async Task<JsonResult> ApproveBid([FromBody] BidViewModel bid)
+		{
+
+			bool status = await _jobService.BidApprove(bid);
+
+			if (status)
+			{
+				return new JsonResult(new { Status = ResponseCodes.AllSuccess });
+			}
+			return new JsonResult(new { Status = ResponseCodes.AllFail });
+		}
+
+
+		[Route("RejectJob")]
+		[HttpGet]
+		public async Task<JsonResult> JobCancel(Guid jobId)
+		{
+			var status = await _jobService.CancelJobByClient(jobId);
+			return new JsonResult(status);
+		}
+
+		[Route("MoveToInprogress")]
+		[HttpGet]
+		public async Task<JsonResult> JobMoveToInprogress(Guid jobId)
+		{
+			var status = await _jobService.JobMoveToInprogress(jobId);
+			return new JsonResult(status);
+		}
+		
+
+		[Route("ProviderCompleteJob")]
+		[HttpGet]
+		public async Task<JsonResult> ProviderCompleteJob(Guid jobId)
+		{
+			var status = await _jobService.JobCompleteByProvider(jobId);
+			return new JsonResult(status);
+		}
+
+		[Route("JobFeedback")]
+		[HttpPost]
+		public async Task<JsonResult> AddJobFeedback([FromBody] JobFeedbackViewmodal feedback)
+		{
+
+			JobViewModel Job = await _jobService.AddJobFeedbackAssync(feedback);
+
+			if (Job != null)
+			{
+				return new JsonResult(Job);
+			}
+			return new JsonResult(null);
+		}
+
 	}
 }

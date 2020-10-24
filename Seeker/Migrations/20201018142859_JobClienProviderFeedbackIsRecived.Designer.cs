@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Seeker.Models;
 
 namespace Seeker.Migrations
 {
     [DbContext(typeof(AuthenticationContext))]
-    partial class AuthenticationContextModelSnapshot : ModelSnapshot
+    [Migration("20201018142859_JobClienProviderFeedbackIsRecived")]
+    partial class JobClienProviderFeedbackIsRecived
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -306,8 +308,6 @@ namespace Seeker.Migrations
                     b.Property<bool>("IsClientFeedbackRecived");
 
                     b.Property<bool>("IsDeleted");
-
-                    b.Property<bool>("IsPaymentSend");
 
                     b.Property<bool>("IsProviderFeedbackRecived");
 

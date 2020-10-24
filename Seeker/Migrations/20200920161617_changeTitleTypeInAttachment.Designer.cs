@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Seeker.Models;
 
 namespace Seeker.Migrations
 {
     [DbContext(typeof(AuthenticationContext))]
-    partial class AuthenticationContextModelSnapshot : ModelSnapshot
+    [Migration("20200920161617_changeTitleTypeInAttachment")]
+    partial class changeTitleTypeInAttachment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -236,50 +238,6 @@ namespace Seeker.Migrations
                     b.ToTable("Attachments");
                 });
 
-            modelBuilder.Entity("Seeker.Models.Bid", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AcceptedUserId");
-
-                    b.Property<decimal>("Budget");
-
-                    b.Property<Guid?>("CountryId");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedDateTime");
-
-                    b.Property<string>("CreatedUserId");
-
-                    b.Property<string>("Description");
-
-                    b.Property<DateTime>("FromDateTime");
-
-                    b.Property<bool>("IsBidAccepted");
-
-                    b.Property<bool>("IsBidRejected");
-
-                    b.Property<Guid>("JobId");
-
-                    b.Property<string>("LastUpdatedBy");
-
-                    b.Property<DateTime>("LastUpdatedDateTime");
-
-                    b.Property<DateTime>("ToDateTime");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AcceptedUserId");
-
-                    b.HasIndex("CreatedUserId");
-
-                    b.HasIndex("JobId");
-
-                    b.ToTable("Bid");
-                });
-
             modelBuilder.Entity("Seeker.Models.Job", b =>
                 {
                     b.Property<Guid>("Id")
@@ -303,13 +261,7 @@ namespace Seeker.Migrations
 
                     b.Property<DateTime>("FromDateTime");
 
-                    b.Property<bool>("IsClientFeedbackRecived");
-
                     b.Property<bool>("IsDeleted");
-
-                    b.Property<bool>("IsPaymentSend");
-
-                    b.Property<bool>("IsProviderFeedbackRecived");
 
                     b.Property<string>("JobLatitude");
 
@@ -338,64 +290,6 @@ namespace Seeker.Migrations
                     b.HasIndex("CreatedUserId");
 
                     b.ToTable("Jobs");
-                });
-
-            modelBuilder.Entity("Seeker.Models.JobComment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Comment");
-
-                    b.Property<string>("CommentedUserId");
-
-                    b.Property<DateTime>("CreatedDateTime");
-
-                    b.Property<Guid>("JobId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommentedUserId");
-
-                    b.HasIndex("JobId");
-
-                    b.ToTable("JobComment");
-                });
-
-            modelBuilder.Entity("Seeker.Models.JobFeedback", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid?>("CountryId");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedDateTime");
-
-                    b.Property<string>("Feedback");
-
-                    b.Property<int>("FeedbackRatings");
-
-                    b.Property<bool>("IsClientFeedback");
-
-                    b.Property<bool>("IsProviderFeedback");
-
-                    b.Property<Guid>("JobId");
-
-                    b.Property<string>("LastUpdatedBy");
-
-                    b.Property<DateTime>("LastUpdatedDateTime");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JobId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("JobFeedbacks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -450,22 +344,6 @@ namespace Seeker.Migrations
                         .HasForeignKey("JobId");
                 });
 
-            modelBuilder.Entity("Seeker.Models.Bid", b =>
-                {
-                    b.HasOne("Seeker.Models.ApplicationUser", "AcceptedUser")
-                        .WithMany()
-                        .HasForeignKey("AcceptedUserId");
-
-                    b.HasOne("Seeker.Models.ApplicationUser", "CreatedUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedUserId");
-
-                    b.HasOne("Seeker.Models.Job", "Job")
-                        .WithMany("Bids")
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Seeker.Models.Job", b =>
                 {
                     b.HasOne("Seeker.Models.ApplicationUser", "AssigndUser")
@@ -475,30 +353,6 @@ namespace Seeker.Migrations
                     b.HasOne("Seeker.Models.ApplicationUser", "CreatedUser")
                         .WithMany()
                         .HasForeignKey("CreatedUserId");
-                });
-
-            modelBuilder.Entity("Seeker.Models.JobComment", b =>
-                {
-                    b.HasOne("Seeker.Models.ApplicationUser", "CommentedUser")
-                        .WithMany()
-                        .HasForeignKey("CommentedUserId");
-
-                    b.HasOne("Seeker.Models.Job")
-                        .WithMany("JobComments")
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Seeker.Models.JobFeedback", b =>
-                {
-                    b.HasOne("Seeker.Models.Job", "Job")
-                        .WithMany("JobFeedbacks")
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Seeker.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

@@ -43,6 +43,13 @@ namespace Seeker.Constants
 		BidRecivedOrApproveWating = 2,
 		BidAccepted = 3,
 		InProgress = 4,
-		Completed = 5
+		Completed = 5,
+		Rejected = 6
+	}
+	public enum JobAvailabiltyStatus
+	{
+		Hourly = 0,
+		PartTime = 1,
+		FullTime = 2
 	}
 }

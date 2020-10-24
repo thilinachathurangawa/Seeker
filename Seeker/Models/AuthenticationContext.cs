@@ -13,7 +13,8 @@ namespace Seeker.Models
 		{			
 		}
 		public DbSet<Job> Jobs { get; set; }
+		public DbSet<Bid> Bid { get; set; }
 		public DbSet<Attachment> Attachments { get; set; }
-		//public DbSet<ApplicationUser> ApplicationUser { get; set; }
+		public DbSet<JobFeedback> JobFeedbacks { get; set; }
 	}
 }

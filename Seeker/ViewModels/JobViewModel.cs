@@ -19,10 +19,21 @@ namespace Seeker.ViewModels
 		public Decimal Budget { get; set; }
 		public DateTime FromDateTime { get; set; }
 		public DateTime ToDateTime { get; set; }
-		public DateTime PostedOn { get; set; }
+		public string FromDateTimeDisplay { get; set; }
+		public string ToDateTimeDisplay { get; set; }
+		public string PostedOn { get; set; }
 		public bool IsDeleted { get; set; }
 		public string ServiceType { get; set; }
+		public string CreatedBy { get; set; }
+		public bool IsProviderFeedbackRecived { get; set; }
+		public bool IsClientFeedbackRecived { get; set; }
+		public bool IsPaymentSend { get; set; }
 		public JobworkflowStatus workflowStatus { get; set; }
 		public List<AttachmentViewModel> Attachments { get; set; }
+		public List<CommentViewModel> JobCommentList { get; set; }
+		public List<BidViewModel> Bids { get; set; }
+		public BidViewModel AcceptedBid { get; set; }
+		public JobAvailabiltyStatus Availabilty { get; set; }
+		public List<JobFeedbackViewmodal> JobFeedbacks { get; set; }
 	}
 }

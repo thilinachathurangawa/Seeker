@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Seeker.Models;
 
 namespace Seeker.Migrations
 {
     [DbContext(typeof(AuthenticationContext))]
-    partial class AuthenticationContextModelSnapshot : ModelSnapshot
+    [Migration("20201016191642_AddAcceptedBidToBid")]
+    partial class AddAcceptedBidToBid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -259,8 +261,6 @@ namespace Seeker.Migrations
 
                     b.Property<bool>("IsBidAccepted");
 
-                    b.Property<bool>("IsBidRejected");
-
                     b.Property<Guid>("JobId");
 
                     b.Property<string>("LastUpdatedBy");
@@ -303,13 +303,7 @@ namespace Seeker.Migrations
 
                     b.Property<DateTime>("FromDateTime");
 
-                    b.Property<bool>("IsClientFeedbackRecived");
-
                     b.Property<bool>("IsDeleted");
-
-                    b.Property<bool>("IsPaymentSend");
-
-                    b.Property<bool>("IsProviderFeedbackRecived");
 
                     b.Property<string>("JobLatitude");
 
@@ -360,42 +354,6 @@ namespace Seeker.Migrations
                     b.HasIndex("JobId");
 
                     b.ToTable("JobComment");
-                });
-
-            modelBuilder.Entity("Seeker.Models.JobFeedback", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid?>("CountryId");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedDateTime");
-
-                    b.Property<string>("Feedback");
-
-                    b.Property<int>("FeedbackRatings");
-
-                    b.Property<bool>("IsClientFeedback");
-
-                    b.Property<bool>("IsProviderFeedback");
-
-                    b.Property<Guid>("JobId");
-
-                    b.Property<string>("LastUpdatedBy");
-
-                    b.Property<DateTime>("LastUpdatedDateTime");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JobId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("JobFeedbacks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -487,18 +445,6 @@ namespace Seeker.Migrations
                         .WithMany("JobComments")
                         .HasForeignKey("JobId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Seeker.Models.JobFeedback", b =>
-                {
-                    b.HasOne("Seeker.Models.Job", "Job")
-                        .WithMany("JobFeedbacks")
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Seeker.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

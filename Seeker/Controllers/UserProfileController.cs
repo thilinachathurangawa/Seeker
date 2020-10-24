@@ -31,7 +31,8 @@ namespace WebAPI.Controllers
 				 user.Id,
                  user.FirstName,
                  user.Email,
-                 user.LastName
+                 user.LastName,
+                 user.UserType
             };
         }
     }
